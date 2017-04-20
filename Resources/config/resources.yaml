@@ -1,0 +1,8 @@
+actions:
+    Ekyna\Bundle\ApiBundle\Action\CrudActions: ~
+    Ekyna\Bundle\ApiBundle\Action\CreateAction: ~
+    Ekyna\Bundle\ApiBundle\Action\DeleteAction: ~
+    Ekyna\Bundle\ApiBundle\Action\ListAction: ~
+    Ekyna\Bundle\ApiBundle\Action\ReadAction: ~
+    Ekyna\Bundle\ApiBundle\Action\SearchAction: ~
+    Ekyna\Bundle\ApiBundle\Action\UpdateAction: ~

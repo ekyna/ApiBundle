@@ -1,0 +1,3 @@
+ekyna_api_resource:
+    resource: .
+    type: api_resource

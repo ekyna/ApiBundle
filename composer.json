@@ -1,0 +1,27 @@
+{
+    "name": "ekyna/api-bundle",
+    "description": "Api features for EkynaResourceBundle",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Etienne Dauvergne",
+            "homepage": "https://ekyna.com"
+        }
+    ],
+    "keywords": [
+        "symfony",
+        "api",
+        "bundle"
+    ],
+    "homepage": "https://github.com/ekyna/ApiBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4",
+        "ekyna/resource-bundle": "0.8.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ekyna\\Bundle\\ApiBundle\\": ""
+        }
+    }
+}
