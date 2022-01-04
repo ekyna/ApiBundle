@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ekyna\Bundle\ApiBundle\DependencyInjection;
 
-use Ekyna\Component\User\Service\SecurityConfigurator;
+use Ekyna\Component\User\Service\Security\SecurityConfigurator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -55,21 +55,6 @@ class EkynaApiExtension extends Extension implements PrependExtensionInterface
                     'custom_authenticators' => [
                         'ekyna_api.security.authenticator.token',
                     ],
-                    /*'oauth'       => [
-                        'resource_owners'     => [
-                            'google' => $routingPrefix.'/login/check-google',
-                        ],
-                        'oauth_user_provider' => [
-                            'service' => 'ekyna_admin.security.oauth_user_provider',
-                        ],
-                        'login_path'          => 'admin_security_login',
-                        'check_path'          => 'admin_security_check',
-                        'failure_path'        => 'admin_security_login',
-                        'default_target_path' => 'admin_dashboard',
-                        'use_forward'         => false,
-                        //'success_handler' => 'ekyna_admin.security.authentication_success_handler',
-                        //'failure_handler' => 'ekyna_admin.security.authentication_failure_handler',
-                    ],*/
                 ],
             ],
         ]);

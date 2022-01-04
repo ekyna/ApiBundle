@@ -17,7 +17,8 @@
     "license": "MIT",
     "require": {
         "php": ">=7.4",
-        "ekyna/resource-bundle": "0.8.x-dev"
+        "ekyna/resource-bundle": "0.8.x-dev",
+        "ekyna/user": "0.8.x-dev"
     },
     "autoload": {
         "psr-4": {
