@@ -2,28 +2,26 @@ define('ekyna-api/api', ['routing', 'es6-promise', 'jquery'], function (Router, 
     "use strict";
 
     es6Promise.polyfill();
-    var Promise = es6Promise.Promise;
+    let Promise = es6Promise.Promise;
 
     function getToken(route) {
         return new Promise(function (resolve, reject) {
-            var cache = window.localStorage;
+            let cache = window.localStorage;
             if (cache) {
-                var auth = cache.getItem(route);
+                let auth = cache.getItem(route);
                 if (auth) {
                     auth = JSON.parse(auth);
 
-                    if (auth.expires_at > Math.floor((new Date()).getTime() / 1000)) {
+                    if (auth.hasOwnProperty('expires_at') && auth.expires_at > Math.floor((new Date()).getTime() / 1000)) {
                         resolve(auth.token);
 
                         return;
                     }
-
                 }
             }
 
-            var xhr = $.ajax({
-                url: Router.generate(route),
-                method: 'GET'
+            let xhr = $.ajax({
+                url: Router.generate(route), method: 'GET'
             });
 
             xhr.done(function (data) {
@@ -33,16 +31,73 @@ define('ekyna-api/api', ['routing', 'es6-promise', 'jquery'], function (Router, 
 
                 resolve(data.token)
             });
+
+            xhr.fail(function () {
+                reject()
+            });
         });
     }
 
-    var Api = {};
+    function clearToken(route) {
+        const cache = window.localStorage;
+        if (!cache) {
+            return;
+        }
+
+        cache.removeItem(route);
+    }
+
+    const Api = {
+        route: null, token: null, loading: false,
+    };
+
+    Api.load = function () {
+        if (this.loading) {
+            return;
+        }
+
+        if (!this.route) {
+            return;
+        }
+
+        this.loading = true;
+
+        getToken(this.route)
+            .then((token) => {
+                this.token = token;
+                this.loading = false;
+            }, () => {
+                clearToken(this.route);
+                this.token = null;
+                this.loading = false;
+            });
+    };
 
     Api.init = function (route) {
-        getToken(route).then(function (token) {
-            $(document).ajaxSend(function (event, xhr) {
-                xhr.setRequestHeader('X-Auth-Token', token);
-            });
+        this.route = route;
+
+        this.load();
+
+        $(document).ajaxError((event, xhr, settings) => {
+            if (401 !== xhr.status) {
+                return;
+            }
+
+            if (0 !== (new URL(settings.url, window.location.href)).pathname.indexOf('/api')) {
+                return;
+            }
+
+            clearToken(this.route);
+            this.token = null;
+            this.load();
+        });
+
+        $(document).ajaxSend((event, xhr) => {
+            if (!this.token) {
+                return;
+            }
+
+            xhr.setRequestHeader('X-Auth-Token', this.token);
         });
     };
 
