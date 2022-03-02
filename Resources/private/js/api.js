@@ -1,8 +1,5 @@
-define('ekyna-api/api', ['routing', 'es6-promise', 'jquery'], function (Router, es6Promise, $) {
+define('ekyna-api/api', ['routing', 'jquery'], function (Router, $) {
     "use strict";
-
-    es6Promise.polyfill();
-    let Promise = es6Promise.Promise;
 
     function getToken(route) {
         return new Promise(function (resolve, reject) {
