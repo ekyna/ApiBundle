@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
+use function is_null;
+use function is_string;
+
 /**
  * Class AbstractApiAction
  * @package Ekyna\Bundle\ApiBundle\Action
@@ -29,10 +32,6 @@ abstract class AbstractApiAction extends AbstractAction implements ApiActionInte
 
     /**
      * Returns the serialization context.
-     *
-     * @param array $context
-     *
-     * @return array
      */
     protected function getSerializationContext(array $context = []): array
     {
@@ -47,15 +46,12 @@ abstract class AbstractApiAction extends AbstractAction implements ApiActionInte
 
     /**
      * Builds the JSON response.
-     *
-     * @param ResourceInterface|array|string $content
-     * @param int                            $code
-     * @param array                          $headers
-     *
-     * @return JsonResponse
      */
-    protected function respond($content, int $code = JsonResponse::HTTP_OK, array $headers = []): JsonResponse
-    {
+    protected function respond(
+        ResourceInterface|array|string|null $content,
+        int                                 $code = Response::HTTP_OK,
+        array                               $headers = []
+    ): JsonResponse {
         if (is_null($content)) {
             return new JsonResponse($content, $code, $headers);
         }
@@ -79,9 +75,6 @@ abstract class AbstractApiAction extends AbstractAction implements ApiActionInte
 
     /**
      * Deserializes the resource.
-     *
-     * @param ResourceInterface $resource
-     * @param string            $data
      */
     protected function deserializeResource(ResourceInterface $resource, string $data): void
     {
@@ -99,15 +92,11 @@ abstract class AbstractApiAction extends AbstractAction implements ApiActionInte
 
     /**
      * Responds with validation errors.
-     *
-     * @param array $violations
-     *
-     * @return JsonResponse
      */
     protected function respondValidationErrors(array $violations): JsonResponse
     {
         if (empty($violations)) {
-            throw new LogicException('Expected at least one valiation violation.');
+            throw new LogicException('Expected at least one validation violation.');
         }
 
         $errors = [];
@@ -116,15 +105,11 @@ abstract class AbstractApiAction extends AbstractAction implements ApiActionInte
                 $this->trans($violation->getMessage(), $violation->getParameters());
         }
 
-        return $this->respond(['errors' => $errors], JsonResponse::HTTP_BAD_REQUEST);
+        return $this->respond(['errors' => $errors], Response::HTTP_BAD_REQUEST);
     }
 
     /**
      * Responds with resource event errors.
-     *
-     * @param ResourceEventInterface $event
-     *
-     * @return JsonResponse
      */
     protected function respondEventErrors(ResourceEventInterface $event): JsonResponse
     {

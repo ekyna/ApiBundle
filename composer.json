@@ -16,9 +16,9 @@
     "homepage": "https://github.com/ekyna/ApiBundle",
     "license": "MIT",
     "require": {
-        "php": ">=7.4",
-        "ekyna/resource-bundle": "0.8.x-dev",
-        "ekyna/user": "0.8.x-dev"
+        "php": ">=8.1",
+        "ekyna/resource-bundle": "0.9.x-dev",
+        "ekyna/user": "0.9.x-dev"
     },
     "autoload": {
         "psr-4": {
